@@ -10,9 +10,18 @@ public class HttpClientFeatures {
 
 	public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder(new URI("https://www.google.com.br")).GET().build();
+		URI uri = new URI("https://www.google.com.br");
+		HttpRequest request = HttpRequest.newBuilder(uri).GET().build();
 		HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 		System.out.println("Status code: "+response.statusCode());
 		System.out.println("Body: "+response.body());
+		
+		HttpClient client2 = HttpClient.newHttpClient();
+		HttpRequest request2 = HttpRequest.newBuilder(uri).GET().build();
+		System.out.println("------------------Request Async------------------\n");
+		client2.sendAsync(request2, BodyHandlers.ofString()).whenComplete((s, t) -> System.out.println("----------------------------Resposta da request. \nBody: " + s.body()));
+		System.out.println("\nExecutando Instrucoes seguintes...");
+		System.out.println("\nExecutando outra instrução...");
+		Thread.sleep(10000);
 	}
 }
