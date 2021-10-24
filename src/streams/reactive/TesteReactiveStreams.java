@@ -2,7 +2,6 @@ package streams.reactive;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.SubmissionPublisher;
@@ -17,8 +16,8 @@ public class TesteReactiveStreams {
 		NotaFiscal nota1 = new NotaFiscal("Joao", BigDecimal.valueOf(20), LocalDate.now());
 		NotaFiscal nota2 = new NotaFiscal("Pedro", BigDecimal.valueOf(30), LocalDate.now());
 		SubmissionPublisher<NotaFiscal> publisher = new SubmissionPublisher<NotaFiscal>(threadPool,1);
-		NotaFiscalService nfs = new NotaFiscalService();
-		publisher.consume(nfs::emitir);
+		NotaFiscalSubscriber subscriber = new NotaFiscalSubscriber();
+		publisher.subscribe(subscriber);
 		publisher.submit(nota1);
 		publisher.submit(nota2);
 		publisher.close();
